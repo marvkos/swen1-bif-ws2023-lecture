@@ -1,0 +1,58 @@
+@startuml
+
+package http {
+
+    class Request {
+        - method: String
+        - route: String
+        - contentType: String
+        - contentLength: int
+        - body: String
+    }
+
+    class Response {
+
+    }
+
+    enum HttpMethod {
+        GET
+        POST
+        PUT
+        DELETE
+    }
+
+    enum ContentType {
+        APPLICATION_JSON
+        TEXT_PLAIN
+        TEXT_HTML
+    }
+
+}
+
+package util {
+
+    class HttpMapper {
+        + toRequestObject(String request): Request
+        + toResponseString(Response response): String
+    }
+
+}
+
+interface ServerApplication {
+    + handle(Request request): Response
+}
+
+class Server {
+    - app: ServerApplication
+    - server: ServerSocket
+
+    + Server(ServerApplication app)
+    + start()
+}
+
+class RequestHandler {
+    - app: ServerApplication
+    - client: Socket
+}
+
+@enduml
