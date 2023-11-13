@@ -8,6 +8,7 @@ public class DisplayApp implements ServerApplication {
 
     @Override
     public Response handle(Request request) {
+        // TODO
         return null;
     }
 }
