@@ -1,5 +1,7 @@
 package at.technikum.server;
 
+import at.technikum.server.http.HttpContentType;
+import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import at.technikum.server.util.HttpMapper;
@@ -29,15 +31,11 @@ public class RequestHandler {
 
         String httpRequest = getHttpStringFromStream(in);
 
-        Request req = HttpMapper.toRequestObject(httpRequest);
+        Request request = HttpMapper.toRequestObject(httpRequest);
+        Response response = app.handle(request);
 
         out = new PrintWriter(client.getOutputStream(), true);
-        out.write(
-                "HTTP/1.1 200 OK\r\n" +
-                        "Content-Type: text/html\r\n" +
-                        "Content-Length: 5\r\n" +
-                        "\r\n" +
-                        "Hallo");
+        out.write(HttpMapper.toResponseString(response));
 
         out.close();
         in.close();

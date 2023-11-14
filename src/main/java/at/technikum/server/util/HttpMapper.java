@@ -22,8 +22,12 @@ public class HttpMapper {
     }
 
     public static String toResponseString(Response response) {
-        // TODO
-        return null;
+
+        return "HTTP/1.1 " + response.getStatusCode() + " " + response.getStatusMessage() + "\r\n" +
+                "Content-Type: " + response.getContentType() + "\r\n" +
+                "Content-Length: " + response.getBody().length() + "\r\n" +
+                "\r\n" +
+                response.getBody();
     }
 
     // THOUGHT: Maybe some better place for this logic?
