@@ -27,7 +27,9 @@ public class RequestHandler {
     public void handle() throws IOException {
         in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-        System.out.println(getHttpStringFromStream(in));
+        String httpRequest = getHttpStringFromStream(in);
+
+        Request req = HttpMapper.toRequestObject(httpRequest);
 
         out = new PrintWriter(client.getOutputStream(), true);
         out.write(
