@@ -13,6 +13,8 @@ public class DisplayApp implements ServerApplication {
     @Override
     public Response handle(Request request) {
 
+        System.out.println(request.getMethod() + " " + request.getRoute());
+
         if (request.getRoute().equals("/hello")) {
             Response response = new Response();
             response.setStatus(HttpStatus.OK);
