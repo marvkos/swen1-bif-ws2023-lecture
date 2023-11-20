@@ -1,7 +1,5 @@
 package at.technikum.server;
 
-import at.technikum.server.http.HttpContentType;
-import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import at.technikum.server.util.HttpMapper;
@@ -11,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RequestHandler {
 
@@ -42,6 +42,7 @@ public class RequestHandler {
         client.close();
     }
 
+    // THOUGHT: create a SocketReader class
     private String getHttpStringFromStream(BufferedReader in) throws IOException {
         StringBuilder builder = new StringBuilder();
 
@@ -51,6 +52,22 @@ public class RequestHandler {
                     .append(inputLine)
                     .append(System.lineSeparator());
         }
+
+        String httpRequest = builder.toString();
+
+        Pattern regex = Pattern.compile("^Content-Length:\\s(.+)", Pattern.MULTILINE);
+        Matcher matcher = regex.matcher(httpRequest);
+
+        if (!matcher.find()) {
+            return builder.toString();
+        }
+
+        builder.append(System.lineSeparator());
+
+        int contentLength = Integer.parseInt(matcher.group(1));
+        char[] buffer = new char[contentLength];
+        in.read(buffer, 0, contentLength);
+        builder.append(buffer);
 
         return builder.toString();
     }
