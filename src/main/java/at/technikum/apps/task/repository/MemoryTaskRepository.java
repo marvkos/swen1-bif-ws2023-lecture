@@ -26,6 +26,9 @@ public class MemoryTaskRepository implements TaskRepository {
 
     @Override
     public Task save(Task task) {
+        task.setId(tasks.size() + 1);
+        tasks.add(task);
+
         return task;
     }
 

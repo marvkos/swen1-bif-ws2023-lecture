@@ -6,6 +6,8 @@ import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -50,15 +52,58 @@ public class TaskController extends Controller {
     }
 
     public Response create(Request request) {
-        return null;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Task task = null;
+        try {
+            task = objectMapper.readValue(request.getBody(), Task.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        // task = toObject(request.getBody(), Task.class);
+
+        task = taskService.save(task);
+
+        String taskJson = null;
+        try {
+            taskJson = objectMapper.writeValueAsString(task);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        Response response = new Response();
+        // THOUGHT: better status 201 Created
+        response.setStatus(HttpStatus.OK);
+        response.setContentType(HttpContentType.APPLICATION_JSON);
+        response.setBody(taskJson);
+
+        return response;
+
+        // return json(task);
     }
 
     public Response readAll(Request request) {
         List<Task> tasks = taskService.findAll();
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        String tasksJson = null;
+        try {
+            tasksJson = objectMapper.writeValueAsString(tasks);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+
         // Object to JSON coming soon
 
-        return null;
+        Response response = new Response();
+        // THOUGHT: better status 201 Created
+        response.setStatus(HttpStatus.OK);
+        response.setContentType(HttpContentType.APPLICATION_JSON);
+        response.setBody(tasksJson);
+
+        return response;
     }
 
     public Response read(int id, Request request) {

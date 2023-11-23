@@ -24,7 +24,7 @@ public class TaskService {
     }
 
     public Task save(Task task) {
-        return null;
+        return taskRepository.save(task);
     }
 
     public Task update(int updateId, Task updatedTask) {
