@@ -5,6 +5,7 @@ import at.technikum.apps.task.entity.Task;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MemoryTaskRepository implements TaskRepository {
 
@@ -26,7 +27,6 @@ public class MemoryTaskRepository implements TaskRepository {
 
     @Override
     public Task save(Task task) {
-        task.setId(tasks.size() + 1);
         tasks.add(task);
 
         return task;

@@ -28,7 +28,18 @@ public class TaskApp implements ServerApplication {
                 continue;
             }
 
-            return controller.handle(request);
+            // THOUGHT: implement this idea
+            try {
+                return controller.handle(request);
+            /*
+            // HttpException doesn't exists yet
+            } catch (HttpException e) {
+                // return e.getHttpStatus() response
+            }
+            */
+            } catch (Exception e) {
+                // return 500 Internal Server Error
+            }
         }
 
         Response response = new Response();
