@@ -13,8 +13,8 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
-    public TaskService() {
-        this.taskRepository = new DatabaseTaskRepository();
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
     public List<Task> findAll() {

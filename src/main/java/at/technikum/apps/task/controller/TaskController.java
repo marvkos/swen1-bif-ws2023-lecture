@@ -1,6 +1,7 @@
 package at.technikum.apps.task.controller;
 
 import at.technikum.apps.task.entity.Task;
+import at.technikum.apps.task.repository.DatabaseTaskRepository;
 import at.technikum.apps.task.service.TaskService;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
@@ -16,7 +17,7 @@ public class TaskController extends Controller {
     private final TaskService taskService;
 
     public TaskController() {
-        this.taskService = new TaskService();
+        this.taskService = new TaskService(new DatabaseTaskRepository());
     }
 
     @Override
