@@ -28,7 +28,8 @@ public class Server {
                 Socket socket = server.accept();
 
                 RequestHandler handler = new RequestHandler(socket, app);
-                handler.handle();
+                Thread thread = new Thread(handler);
+                thread.start();
 
             } catch (IOException e) {
                 throw new RuntimeException(e);

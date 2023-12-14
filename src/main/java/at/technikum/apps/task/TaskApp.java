@@ -16,8 +16,9 @@ public class TaskApp implements ServerApplication {
     private final List<Controller> controllers;
 
     public TaskApp() {
-        this.controllers = new ArrayList<>();
-        this.controllers.add(new TaskController());
+        Injector injector = new Injector();
+
+        this.controllers = injector.createController();
     }
 
     @Override

@@ -16,8 +16,8 @@ public class TaskController extends Controller {
 
     private final TaskService taskService;
 
-    public TaskController() {
-        this.taskService = new TaskService(new DatabaseTaskRepository());
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     @Override

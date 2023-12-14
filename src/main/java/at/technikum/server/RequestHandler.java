@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RequestHandler {
+public class RequestHandler implements Runnable {
 
     private BufferedReader in;
     private PrintWriter out;
@@ -24,6 +24,15 @@ public class RequestHandler {
     public RequestHandler(Socket client, ServerApplication app) {
         this.client = client;
         this.app = app;
+    }
+
+    @Override
+    public void run() {
+        try {
+            handle();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void handle() throws IOException {
@@ -71,4 +80,6 @@ public class RequestHandler {
 
         return builder.toString();
     }
+
+
 }

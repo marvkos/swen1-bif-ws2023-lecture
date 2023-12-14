@@ -1,0 +1,58 @@
+@startuml
+
+Actor PlayerA
+Actor PlayerB
+
+activate PlayerA
+PlayerA -> BattleController: POST battle request
+activate BattleController
+
+BattleController -> BattleService: battle(playerA)
+activate BattleService
+
+BattleService -> BattleRepository: findOpenBattles()
+activate BattleRepository
+
+BattleRepository --> BattleService: []
+deactivate BattleRepository
+
+BattleService -> BattleRepository: openBattle(playerA)
+activate BattleRepository
+
+BattleRepository --> BattleService: battleId
+deactivate BattleRepository
+
+BattleService -> BattleService: waitingForBattle(battleId)
+
+PlayerB -> BattleController: POST battle request
+activate PlayerB
+
+BattleController -> BattleService: battle(playerB)
+
+BattleService -> BattleRepository: findOpenBattles()
+activate BattleRepository
+BattleRepository --> BattleService: [openBattle]
+deactivate BattleRepository
+
+BattleService -> BattleLogic: battle(playerA, playerB)
+activate BattleLogic
+
+BattleLogic --> BattleService: battle results
+deactivate BattleLogic
+
+BattleService -> BattleRepository: update(battle)
+activate BattleRepository
+BattleRepository --> BattleService
+deactivate BattleRepository
+
+BattleService --> BattleController: battle results
+deactivate BattleService
+
+BattleController --> PlayerA: battle results
+deactivate PlayerA
+
+BattleController --> PlayerB: battle results
+deactivate BattleController
+deactivate BattleController
+
+@enddef
